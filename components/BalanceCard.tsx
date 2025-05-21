@@ -1,14 +1,24 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
 interface BalanceCardProps {
   netWorth: number;
   loading: boolean;
+  overallChangePercent?: number;
 }
 
-const BalanceCard = ({ netWorth, loading }: BalanceCardProps) => {
+const BalanceCard = ({
+  netWorth,
+  loading,
+  overallChangePercent,
+}: BalanceCardProps) => {
+  // Determine color and icon for overall change
+  const isUp = (overallChangePercent ?? 0) >= 0;
+  const changeColor = isUp ? "#85FF8F" : "#FF5B5B";
+  const changeIcon = isUp ? "arrow-up" : "arrow-down";
+
   return (
     <View style={styles.balanceCardWrapper}>
       <LinearGradient
@@ -26,24 +36,31 @@ const BalanceCard = ({ netWorth, loading }: BalanceCardProps) => {
           <Text style={styles.usdBadge}>USD</Text>
         </View>
         <View style={styles.balanceRow}>
-          <Text style={styles.balanceMain}>
-            {loading
-              ? "Loading..."
-              : `$${Math.floor(netWorth).toLocaleString()}`}
-          </Text>
-          <Text style={styles.balanceDecimal}>
-            {loading ? "" : `.${(netWorth % 1).toFixed(2).slice(2)}`}
-          </Text>
+          {loading ? (
+            <ActivityIndicator size="large" color="#4468fe" />
+          ) : (
+            <>
+              <Text style={styles.balanceMain}>
+                {`$${Math.floor(netWorth).toLocaleString()}`}
+              </Text>
+              <Text style={styles.balanceDecimal}>
+                {`.${(netWorth % 1).toFixed(2).slice(2)}`}
+              </Text>
+            </>
+          )}
         </View>
         <View style={styles.balanceChangeRow}>
           <Ionicons
-            name="arrow-up"
+            name={changeIcon}
             size={14}
-            color="#85FF8F"
+            color={changeColor}
             style={{ marginRight: 2 }}
           />
-          <Text style={styles.balanceChangeValue}>$85,894.32</Text>
-          <Text style={styles.balanceChangePercent}> (24.2%)</Text>
+          <Text style={[styles.balanceChangeValue, { color: changeColor }]}>
+            {overallChangePercent !== undefined
+              ? `${isUp ? "+" : ""}${overallChangePercent.toFixed(2)}%`
+              : "--"}
+          </Text>
         </View>
         <View style={styles.actionButtonsRow}>
           <View style={styles.actionButtonCard}>
@@ -134,15 +151,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "flex-start",
     backgroundColor: "rgba(133,255,143,0.12)",
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
+    borderRadius: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 8,
     marginBottom: 18,
   },
   balanceChangeValue: {
     color: "#85FF8F",
-    fontSize: 14,
-    fontWeight: "bold",
+    fontSize: 16,
+    fontWeight: "medium",
     marginLeft: 2,
   },
   balanceChangePercent: {

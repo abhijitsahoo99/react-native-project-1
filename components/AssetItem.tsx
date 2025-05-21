@@ -1,16 +1,11 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Asset } from "../types/assets";
 
 type AssetItemProps = Omit<Asset, "id"> & {
   onPress: () => void;
+  change24h?: number;
 };
 
 const AssetItem: React.FC<AssetItemProps> = ({
@@ -26,54 +21,63 @@ const AssetItem: React.FC<AssetItemProps> = ({
   chainText,
   price,
   onPress,
-}) => (
-  <TouchableOpacity
-    style={styles.container}
-    onPress={onPress}
-    activeOpacity={0.85}
-  >
-    <View style={[styles.iconContainer, { backgroundColor: iconBg }]}>
-      {typeof icon === "string" ? (
-        <Ionicons name={icon} size={28} color="#fff" />
-      ) : (
-        <Image source={icon} style={styles.iconImage} />
-      )}
-    </View>
-    <View style={styles.assetInfoCol}>
-      <View style={styles.nameRow}>
-        <Text style={styles.name}>{name}</Text>
-        <View
-          style={[
-            styles.chainPill,
-            { backgroundColor: chainBg || "transparent" },
-          ]}
-        >
-          <Text style={[styles.chainPillText, { color: chainText }]}>
-            {chain}
-          </Text>
+  change24h,
+}) => {
+  const isUp = (change24h ?? 0) >= 0;
+  const change24hColor = isUp ? "#12C168" : "#FF5B5B";
+  const change24hIcon = isUp ? "caret-up" : "caret-down";
+
+  return (
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      activeOpacity={0.85}
+    >
+      <View style={[styles.iconContainer, { backgroundColor: iconBg }]}>
+        {typeof icon === "string" ? (
+          <Ionicons name={icon} size={28} color="#fff" />
+        ) : (
+          <Image source={icon} style={styles.iconImage} />
+        )}
+      </View>
+      <View style={styles.assetInfoCol}>
+        <View style={styles.nameRow}>
+          <Text style={styles.name}>{name}</Text>
+          <View
+            style={[
+              styles.chainPill,
+              { backgroundColor: chainBg || "transparent" },
+            ]}
+          >
+            <Text style={[styles.chainPillText, { color: chainText }]}>
+              {chain}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.priceRow}>
+          <Text style={styles.price}>{price}</Text>
+          {change24h !== undefined && (
+            <View style={styles.changeRow}>
+              <Ionicons
+                name={change24hIcon}
+                size={13}
+                color={change24hColor}
+                style={{ marginRight: 2 }}
+              />
+              <Text style={[styles.change, { color: change24hColor }]}>
+                {Math.abs(change24h).toFixed(2)}%
+              </Text>
+            </View>
+          )}
         </View>
       </View>
-      <View style={styles.priceRow}>
-        <Text style={styles.price}>{price}</Text>
-        <View style={styles.changeRow}>
-          <Ionicons
-            name={change.startsWith("-") ? "caret-down" : "caret-up"}
-            size={13}
-            color={changeColor}
-            style={{ marginRight: 2 }}
-          />
-          <Text style={[styles.change, { color: changeColor }]}>
-            {change.replace(/[+-]/, "")}
-          </Text>
-        </View>
+      <View style={styles.amountCol}>
+        <Text style={styles.amount}>{amount}</Text>
+        <Text style={styles.value}>{value}</Text>
       </View>
-    </View>
-    <View style={styles.amountCol}>
-      <Text style={styles.amount}>{amount}</Text>
-      <Text style={styles.value}>{value}</Text>
-    </View>
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 12,
     marginBottom: 8,
-},
+  },
   iconContainer: {
     width: 44,
     height: 44,

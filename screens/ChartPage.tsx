@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -14,14 +15,70 @@ import TransactionItem from "../components/TransactionItem";
 import { RootStackParamList } from "../types/assets";
 import { transactions } from "../data/transactions";
 import { usePrices } from "../context/PriceContext";
+// @ts-ignore
+import { AreaChart, LineChart } from "react-native-svg-charts";
+// @ts-ignore
+import * as shape from "d3-shape";
+import { Defs, LinearGradient as SvgGradient, Stop } from "react-native-svg";
+
+const TAB_OPTIONS = [
+  { label: "H", days: 1, interval: "hourly" },
+  { label: "D", days: 1, interval: "hourly" },
+  { label: "W", days: 7, interval: "daily" },
+  { label: "M", days: 30, interval: "daily" },
+  { label: "6M", days: 180, interval: "daily" },
+  { label: "Y", days: 365, interval: "daily" },
+  { label: "All", days: "max", interval: "daily" },
+];
 
 type ChartPageRouteProp = RouteProp<RootStackParamList, "Chart">;
+
+const Gradient = () => (
+  <Defs>
+    <SvgGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+      <Stop offset="0%" stopColor="#4468fe" stopOpacity={0.18} />
+      <Stop offset="100%" stopColor="#0c0e26" stopOpacity={0.01} />
+    </SvgGradient>
+  </Defs>
+);
 
 const ChartPage = () => {
   const navigation = useNavigation();
   const route = useRoute<ChartPageRouteProp>();
   const asset = route.params?.asset;
   const { prices, loading } = usePrices();
+
+  const [selectedTab, setSelectedTab] = useState("M");
+  const [chartData, setChartData] = useState<number[]>([]);
+  const [loadingChart, setLoadingChart] = useState(false);
+  const [chartError, setChartError] = useState<string | null>(null);
+
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "short",
+  });
+
+  useEffect(() => {
+    if (!asset) return;
+    const fetchChartData = async () => {
+      setLoadingChart(true);
+      const tab = TAB_OPTIONS.find((t) => t.label === selectedTab);
+      if (!tab) return;
+      const url = `https://api.coingecko.com/api/v3/coins/${asset.coingeckoId}/market_chart?vs_currency=usd&days=${tab.days}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        console.log("Chart API response:", data);
+        setChartData(data.prices ? data.prices.map((p: any) => p[1]) : []);
+      } catch (e) {
+        setChartData([]);
+        setChartError("Error loading chart data. Please try again later.");
+      }
+      setLoadingChart(false);
+    };
+    fetchChartData();
+  }, [asset?.coingeckoId, selectedTab]);
 
   if (!asset) {
     return (
@@ -47,13 +104,13 @@ const ChartPage = () => {
     maximumFractionDigits: 2,
   })}`;
 
-  console.log("Debug price calculation:", {
-    coingeckoId: asset.coingeckoId,
-    currentPrice,
-    amount,
-    realTimeValue,
-    prices,
-  });
+  const firstPrice = chartData.length > 0 ? chartData[0] : 0;
+  const lastPrice = chartData.length > 0 ? chartData[chartData.length - 1] : 0;
+  const percentChange = firstPrice
+    ? ((lastPrice - firstPrice) / firstPrice) * 100
+    : 0;
+  const percentChangeColor = percentChange >= 0 ? "#12C168" : "#FF5B5B";
+  const percentChangeIcon = percentChange >= 0 ? "arrow-up" : "arrow-down";
 
   return (
     <LinearGradient
@@ -99,13 +156,15 @@ const ChartPage = () => {
           <Text style={styles.value}>${realTimeValue}</Text>
           <View style={styles.changePill}>
             <Ionicons
-              name="arrow-up"
+              name={percentChangeIcon}
               size={14}
-              color="#12C168"
+              color={percentChangeColor}
               style={{ marginRight: 2 }}
             />
-            <Text style={styles.changeValue}>$2,963.14</Text>
-            <Text style={styles.changePercent}> ({asset.change})</Text>
+            <Text style={[styles.changeValue, { color: percentChangeColor }]}>
+              {percentChange >= 0 ? "+" : ""}
+              {percentChange.toFixed(2)}%
+            </Text>
           </View>
         </View>
       </View>
@@ -143,41 +202,88 @@ const ChartPage = () => {
           <View>
             <Text style={styles.chartValue}>{formattedPrice}</Text>
             <View style={styles.chartChangeRow}>
-              <Text style={styles.chartPercent}>+12.05%</Text>
+              <Text
+                style={[styles.chartPercent, { color: percentChangeColor }]}
+              >
+                {percentChange >= 0 ? "+" : ""}
+                {percentChange.toFixed(2)}%
+              </Text>
               <Ionicons
-                name="arrow-up"
+                name={percentChangeIcon}
                 size={14}
-                color="#12C168"
-                style={{ marginLeft: 2 }}
+                color={percentChangeColor}
+                style={{ marginLeft: 2, transform: [{ rotate: "45deg" }] }}
               />
             </View>
-            <Text style={styles.chartDate}>29 Mar</Text>
+            <Text style={styles.chartDate}>{formattedDate}</Text>
           </View>
         </View>
-        <View style={styles.chartPlaceholder}>
-          {/* Chart Placeholder - will be replaced with chart later */}
+        <View style={[styles.chartPlaceholder]}>
+          {loadingChart ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ActivityIndicator size="large" color="#4468fe" />
+            </View>
+          ) : chartData.length === 0 ? (
+            <Text
+              style={{ color: "#FF5B5B", textAlign: "center", marginTop: 40 }}
+            >
+              {chartError}
+            </Text>
+          ) : (
+            <View style={{ height: 200, width: "100%" }}>
+              <AreaChart
+                style={StyleSheet.absoluteFill}
+                data={chartData}
+                svg={{
+                  fill: "url(#gradient)",
+                  strokeWidth: 0, // No border for area
+                }}
+                contentInset={{ top: 20, bottom: 20 }}
+                curve={shape.curveLinear}
+              >
+                <Gradient />
+              </AreaChart>
+              <LineChart
+                style={StyleSheet.absoluteFill}
+                data={chartData}
+                svg={{
+                  stroke: "#4468fe",
+                  strokeWidth: 2,
+                }}
+                contentInset={{ top: 20, bottom: 20 }}
+                curve={shape.curveLinear}
+              />
+            </View>
+          )}
         </View>
 
         {/* Bottom horizontal line */}
         <View style={styles.horizontalLine} />
 
         <View style={styles.chartTabsRow}>
-          {["H", "D", "W", "M", "6M", "Y", "All"].map((tab, idx, arr) => (
+          {TAB_OPTIONS.map((tab, idx, arr) => (
             <TouchableOpacity
-              key={tab}
+              key={tab.label}
               style={[
                 styles.chartTab,
-                tab === "M" && styles.chartTabActive,
+                selectedTab === tab.label && styles.chartTabActive,
                 idx !== arr.length - 1 && { marginRight: 4 },
               ]}
+              onPress={() => setSelectedTab(tab.label)}
             >
               <Text
                 style={[
                   styles.chartTabText,
-                  tab === "M" && styles.chartTabTextActive,
+                  selectedTab === tab.label && styles.chartTabTextActive,
                 ]}
               >
-                {tab}
+                {tab.label}
               </Text>
             </TouchableOpacity>
           ))}
@@ -339,7 +445,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   chartSection: {
-    backgroundColor: "transparent",
     marginTop: 20,
     marginBottom: 0,
     paddingHorizontal: 0,
@@ -371,12 +476,12 @@ const styles = StyleSheet.create({
   },
   chartPercent: {
     color: "#12C168",
-    fontSize: 15,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontWeight: "medium",
   },
   chartDate: {
     color: "#8B8B8B",
-    fontSize: 13,
+    fontSize: 18,
     marginTop: 2,
     marginBottom: 8,
   },
