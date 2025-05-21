@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   },
   chainPillText: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: "500",
   },
   priceRow: {
     flexDirection: "row",

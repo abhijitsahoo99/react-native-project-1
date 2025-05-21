@@ -21,7 +21,11 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 const WalletHome = () => {
   const navigation = useNavigation<NavigationProp>();
   return (
-    <LinearGradient colors={["#030728", "#050410"]} style={styles.container}>
+    <LinearGradient
+      colors={["#030728", "#050410"]}
+      locations={[0, 0.2]}
+      style={styles.container}
+    >
       <View style={styles.header}>
         <Image
           source={require("../assets/profile.jpg")}
@@ -50,7 +54,7 @@ const WalletHome = () => {
           <Text style={styles.sectionTitle}>Assets</Text>
           <TouchableOpacity style={styles.dropdown}>
             <Text style={styles.dropdownText}>All Chains</Text>
-            <Ionicons name="chevron-down" size={16} color="#FFFFFF" />
+            <Ionicons name="chevron-down" size={16} color="#253adb" />
           </TouchableOpacity>
         </View>
         <FlatList
@@ -68,7 +72,7 @@ const WalletHome = () => {
               chainBg={item.chainBg}
               chainText={item.chainText}
               price={item.price}
-              onPress={() => navigation.navigate("Chart")}
+              onPress={() => navigation.navigate("Chart", { asset: item })}
             />
           )}
           keyExtractor={(item) => item.id}
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: "#FFFFFF",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
   },
   dropdown: {
@@ -127,10 +131,10 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   dropdownText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "medium",
     marginRight: 5,
-    color: "#36429E",
+    color: "#253adb",
   },
 });
 

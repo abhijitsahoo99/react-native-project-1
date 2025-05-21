@@ -1,10 +1,6 @@
 import { ImageSourcePropType } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-export type RootStackParamList = {
-  Chart: undefined;
-};
-
 export interface Asset {
   id: string;
   name: string;
@@ -19,3 +15,7 @@ export interface Asset {
   chainText: string;
   price: string;
 }
+
+export type RootStackParamList = {
+  Chart: { asset: Asset };
+};

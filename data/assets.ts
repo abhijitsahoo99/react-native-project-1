@@ -11,6 +11,7 @@ export const assets: Asset[] = [
     icon: require("../assets/bitcoin.png"),
     changeColor: "#FF5B5B",
     iconBg: "#3a2e29",
+    chainBg: "#35323B",
     chainText: "#B0B6D1",
     price: "$79,813.30",
   },
