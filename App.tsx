@@ -1,6 +1,11 @@
 import React from "react";
 import AppNavigator from "./navigation/AppNavigator";
+import { PriceProvider } from "./context/PriceContext";
 
 export default function App() {
-  return <AppNavigator />;
+  return (
+    <PriceProvider>
+      <AppNavigator />
+    </PriceProvider>
+  );
 }

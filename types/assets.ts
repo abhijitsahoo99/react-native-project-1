@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 export interface Asset {
   id: string;
   name: string;
+  coingeckoId: string;
   chain: string;
   amount: string;
   value: string;

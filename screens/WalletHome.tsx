@@ -15,11 +15,25 @@ import BalanceCard from "../components/BalanceCard";
 import AssetItem from "../components/AssetItem";
 import { RootStackParamList } from "../types/assets";
 import { assets } from "../data/assets";
+import { PriceProvider, usePrices } from "../context/PriceContext";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const WalletHome = () => {
+export type Prices = { [id: string]: { usd: number } };
+
+const WalletHomeContent = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { prices, loading } = usePrices() as {
+    prices: Prices;
+    loading: boolean;
+  };
+
+  // Calculate total net worth
+  const totalNetWorth = assets.reduce((sum, asset) => {
+    const price = prices[asset.coingeckoId]?.usd || 0;
+    return sum + price * parseFloat(asset.amount);
+  }, 0);
+
   return (
     <LinearGradient
       colors={["#030728", "#050410"]}
@@ -47,7 +61,7 @@ const WalletHome = () => {
         </View>
       </View>
 
-      <BalanceCard />
+      <BalanceCard netWorth={totalNetWorth} loading={loading} />
 
       <View style={styles.assetsContainer}>
         <View style={styles.assetsHeader}>
@@ -59,22 +73,22 @@ const WalletHome = () => {
         </View>
         <FlatList
           data={assets}
-          renderItem={({ item }) => (
-            <AssetItem
-              name={item.name}
-              chain={item.chain}
-              amount={item.amount}
-              value={item.value}
-              change={item.change}
-              icon={item.icon}
-              changeColor={item.changeColor}
-              iconBg={item.iconBg}
-              chainBg={item.chainBg}
-              chainText={item.chainText}
-              price={item.price}
-              onPress={() => navigation.navigate("Chart", { asset: item })}
-            />
-          )}
+          renderItem={({ item }) => {
+            const price = prices[item.coingeckoId]?.usd || 0;
+            const value = price * parseFloat(item.amount);
+            return (
+              <AssetItem
+                {...item}
+                price={`$${price.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}`}
+                value={`$${value.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}`}
+                onPress={() => navigation.navigate("Chart", { asset: item })}
+              />
+            );
+          }}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         />
@@ -82,6 +96,12 @@ const WalletHome = () => {
     </LinearGradient>
   );
 };
+
+const WalletHome = () => (
+  <PriceProvider>
+    <WalletHomeContent />
+  </PriceProvider>
+);
 
 const styles = StyleSheet.create({
   container: {

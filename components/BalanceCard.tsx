@@ -3,7 +3,12 @@ import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
-const BalanceCard = () => {
+interface BalanceCardProps {
+  netWorth: number;
+  loading: boolean;
+}
+
+const BalanceCard = ({ netWorth, loading }: BalanceCardProps) => {
   return (
     <View style={styles.balanceCardWrapper}>
       <LinearGradient
@@ -21,8 +26,14 @@ const BalanceCard = () => {
           <Text style={styles.usdBadge}>USD</Text>
         </View>
         <View style={styles.balanceRow}>
-          <Text style={styles.balanceMain}>$354,935</Text>
-          <Text style={styles.balanceDecimal}>.18</Text>
+          <Text style={styles.balanceMain}>
+            {loading
+              ? "Loading..."
+              : `$${Math.floor(netWorth).toLocaleString()}`}
+          </Text>
+          <Text style={styles.balanceDecimal}>
+            {loading ? "" : `.${(netWorth % 1).toFixed(2).slice(2)}`}
+          </Text>
         </View>
         <View style={styles.balanceChangeRow}>
           <Ionicons

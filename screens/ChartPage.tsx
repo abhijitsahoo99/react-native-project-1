@@ -13,6 +13,7 @@ import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import TransactionItem from "../components/TransactionItem";
 import { RootStackParamList } from "../types/assets";
 import { transactions } from "../data/transactions";
+import { usePrices } from "../context/PriceContext";
 
 type ChartPageRouteProp = RouteProp<RootStackParamList, "Chart">;
 
@@ -20,6 +21,7 @@ const ChartPage = () => {
   const navigation = useNavigation();
   const route = useRoute<ChartPageRouteProp>();
   const asset = route.params?.asset;
+  const { prices, loading } = usePrices();
 
   if (!asset) {
     return (
@@ -35,6 +37,23 @@ const ChartPage = () => {
       </View>
     );
   }
+
+  // Calculate real-time value
+  const currentPrice = prices[asset.coingeckoId]?.usd || 0;
+  const amount = parseFloat(asset.amount);
+  const realTimeValue = (currentPrice * amount).toFixed(2);
+  const formattedPrice = `$${currentPrice.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+
+  console.log("Debug price calculation:", {
+    coingeckoId: asset.coingeckoId,
+    currentPrice,
+    amount,
+    realTimeValue,
+    prices,
+  });
 
   return (
     <LinearGradient
@@ -77,7 +96,7 @@ const ChartPage = () => {
           {asset.amount} <Text style={styles.balanceSymbol}>{asset.name}</Text>
         </Text>
         <View style={styles.valueRow}>
-          <Text style={styles.value}>${asset.value.replace(/\$/g, "")}</Text>
+          <Text style={styles.value}>${realTimeValue}</Text>
           <View style={styles.changePill}>
             <Ionicons
               name="arrow-up"
@@ -117,13 +136,12 @@ const ChartPage = () => {
 
       {/* Chart and Transactions */}
       <View style={styles.chartSection}>
-        
         {/* Top horizontal line */}
         <View style={styles.horizontalLine} />
 
         <View style={styles.chartHeaderRow}>
           <View>
-            <Text style={styles.chartValue}>{asset.price}</Text>
+            <Text style={styles.chartValue}>{formattedPrice}</Text>
             <View style={styles.chartChangeRow}>
               <Text style={styles.chartPercent}>+12.05%</Text>
               <Ionicons
