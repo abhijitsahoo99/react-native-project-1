@@ -142,11 +142,24 @@ const ChartPage = () => {
           <Text style={styles.assetName}>{asset.name}</Text>
         </View>
         <TouchableOpacity style={styles.headerRight}>
-          <Ionicons name="refresh" size={22} color="#fff" />
+          <Ionicons name="refresh" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
       <View style={styles.chainPill}>
-        <Text style={styles.chainPillText}>{asset.chain}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.chainPillText}>BEP 20</Text>
+          <Text
+            style={{
+              marginLeft: 4,
+              marginRight: 4,
+              alignSelf: "center",
+              color: "#A09EA8",
+            }}
+          >
+            •
+          </Text>
+          <Text style={styles.chainPillText}>{asset.chain}</Text>
+        </View>
       </View>
 
       {/* Balance */}
@@ -155,7 +168,13 @@ const ChartPage = () => {
           {asset.amount} <Text style={styles.balanceSymbol}>{asset.name}</Text>
         </Text>
         <View style={styles.valueRow}>
-          <Text style={styles.value}>${realTimeValue}</Text>
+          <Text style={styles.value}>
+            $
+            {parseFloat(realTimeValue).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </Text>
           <View style={styles.changePill}>
             <Ionicons
               name={percentChangeIcon}
@@ -164,8 +183,13 @@ const ChartPage = () => {
               style={{ marginRight: 2 }}
             />
             <Text style={[styles.changeValue, { color: percentChangeColor }]}>
-              {percentChange >= 0 ? "+" : ""}
-              {percentChange.toFixed(2)}%
+              {percentChange >= 0 ? "+" : ""}$
+              {Math.abs(
+                parseFloat(realTimeValue) -
+                  parseFloat(realTimeValue) / (1 + percentChange / 100)
+              ).toFixed(2)}{" "}
+              ({percentChange >= 0 ? "+" : ""}
+              {percentChange.toFixed(2)}%)
             </Text>
           </View>
         </View>
@@ -353,21 +377,22 @@ const styles = StyleSheet.create({
   },
   assetName: {
     color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: "400",
+    letterSpacing: 0.36,
     marginBottom: 2,
   },
   chainPill: {
-    backgroundColor: "#23222B",
+    backgroundColor: "#2C2B34",
     borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
     alignSelf: "center",
     marginTop: 2,
   },
   chainPillText: {
-    color: "#B0B6D1",
-    fontSize: 13,
+    color: "#A09EA8",
+    fontSize: 14,
     fontWeight: "600",
   },
   headerRight: {
@@ -384,6 +409,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 12,
+    letterSpacing: 0.96,
   },
   balanceSymbol: {
     color: "#B0B6D1",
@@ -400,6 +426,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     marginRight: 8,
+    letterSpacing: 0.64,
   },
   changePill: {
     flexDirection: "row",
@@ -449,6 +476,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
   },
+
   chartSection: {
     marginTop: 20,
     marginBottom: 0,
@@ -472,6 +500,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 0,
+    letterSpacing: 0.4,
   },
   chartChangeRow: {
     flexDirection: "row",
@@ -483,12 +512,14 @@ const styles = StyleSheet.create({
     color: "#12C168",
     fontSize: 18,
     fontWeight: "medium",
+    letterSpacing: 0.56,
   },
   chartDate: {
     color: "#8B8B8B",
     fontSize: 18,
     marginTop: 2,
     marginBottom: 8,
+    letterSpacing: 0.56,
   },
   chartPlaceholder: {
     width: "100%",
@@ -526,13 +557,13 @@ const styles = StyleSheet.create({
   transactionsSection: {
     flex: 1,
     paddingHorizontal: 16,
-    marginTop: 24,
+    marginTop: 32,
   },
   transactionsHeaderRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 12,
     paddingHorizontal: 2,
   },
   transactionsTitle: {

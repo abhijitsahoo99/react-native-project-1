@@ -69,7 +69,12 @@ const BalanceCard = ({
           />
           <Text style={[styles.balanceChangeValue, { color: changeColor }]}>
             {overallChangePercent !== undefined
-              ? `${isUp ? "+" : ""}${overallChangePercent.toFixed(2)}%`
+              ? `$${Math.abs(
+                  netWorth - netWorth / (1 + overallChangePercent / 100)
+                ).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })} (${isUp ? "+" : ""}${overallChangePercent.toFixed(2)}%)`
               : "--"}
           </Text>
         </View>
@@ -126,21 +131,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 6,
     alignItems: "center",
-    gap: 4,
   },
   balanceLabel: {
-    color: "#B0B6D1",
-    fontSize: 20,
+    color: "#ffffff",
+    fontSize: 22,
     fontWeight: "500",
   },
   usdBadge: {
-    color: "#B0B6D1",
+    color: "#ffffff",
     fontSize: 16,
     fontWeight: "bold",
     borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    backgroundColor: "#2B2A79",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    backgroundColor: "rgba(255,255,255,0.08)",
   },
   balanceRow: {
     flexDirection: "row",
@@ -189,9 +193,9 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   actionButtonCard: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     backgroundColor: "rgba(255,255,255,0.08)",
     justifyContent: "center",
     alignItems: "center",
@@ -202,8 +206,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   actionLabel: {
-    color: "#B0B6D1",
-    fontSize: 14,
+    color: "#EEE8F4",
+    fontSize: 16,
     fontWeight: "500",
     width: 56,
     textAlign: "center",

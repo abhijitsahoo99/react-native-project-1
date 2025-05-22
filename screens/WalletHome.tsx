@@ -100,7 +100,7 @@ const WalletHomeContent = () => {
               <Text style={styles.sectionTitle}>Assets</Text>
               <TouchableOpacity style={styles.dropdown}>
                 <Text style={styles.dropdownText}>All Chains</Text>
-                <Ionicons name="chevron-down" size={16} color="#253adb" />
+                <Ionicons name="chevron-down" size={16} color="#4B56AD" />
               </TouchableOpacity>
             </View>
             <FlatList
@@ -187,8 +187,8 @@ const styles = StyleSheet.create({
   dropdownText: {
     fontSize: 18,
     fontWeight: "medium",
-    marginRight: 5,
-    color: "#253adb",
+    marginRight: 4,
+    color: "#4B56AD",
   },
   errorContainer: {
     alignItems: "center",

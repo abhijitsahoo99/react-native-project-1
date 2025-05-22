@@ -22,14 +22,6 @@ import SwapCard from "../components/SwapCard";
 import { assets as assetList } from "../data/assets";
 import { Easing } from "react-native";
 
-const getSymbol = (name: string) => {
-  if (name === "Bitcoin") return "BTC";
-  if (name === "BNB") return "BNB";
-  if (name === "USDT") return "USDT";
-  if (name === "MATIC") return "MATIC";
-  return name;
-};
-
 const fetchPrice = async (coingeckoId: string) => {
   try {
     const res = await fetch(
@@ -84,8 +76,8 @@ const SwapPage = () => {
   // Exchange rate display
   const rate = toPrice ? fromPrice / toPrice : 0;
   const rateDisplay = rate ? rate.toFixed(2) : "-";
-  const fromSymbol = getSymbol(fromAsset.name);
-  const toSymbol = getSymbol(toAsset.name);
+  const fromSymbol = fromAsset.symbol.toUpperCase();
+  const toSymbol = toAsset.symbol.toUpperCase();
   const fromUsdDisplay = fromPrice
     ? fromPrice.toLocaleString(undefined, { maximumFractionDigits: 2 })
     : "-";

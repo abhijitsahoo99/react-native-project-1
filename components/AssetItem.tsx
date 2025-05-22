@@ -43,15 +43,8 @@ const AssetItem: React.FC<AssetItemProps> = ({
       <View style={styles.assetInfoCol}>
         <View style={styles.nameRow}>
           <Text style={styles.name}>{name}</Text>
-          <View
-            style={[
-              styles.chainPill,
-              { backgroundColor: chainBg || "transparent" },
-            ]}
-          >
-            <Text style={[styles.chainPillText, { color: chainText }]}>
-              {chain}
-            </Text>
+          <View style={styles.chainPill}>
+            <Text style={styles.chainPillText}>{chain}</Text>
           </View>
         </View>
         <View style={styles.priceRow}>
@@ -83,7 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#23222B",
+    backgroundColor: "#1A1824",
     borderRadius: 18,
     paddingVertical: 12,
     paddingHorizontal: 12,
@@ -113,18 +106,21 @@ const styles = StyleSheet.create({
   },
   name: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     marginRight: 8,
+    letterSpacing: 0.28,
   },
   chainPill: {
-    borderRadius: 8,
+    borderRadius: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
+    backgroundColor: "#2C2B34",
   },
   chainPillText: {
     fontSize: 12,
     fontWeight: "500",
+    color: "#A09EA8",
   },
   priceRow: {
     flexDirection: "row",
