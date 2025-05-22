@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 export interface Asset {
   id: string;
   name: string;
+  symbol: string;
   coingeckoId: string;
   chain: string;
   amount: string;
@@ -19,4 +20,5 @@ export interface Asset {
 
 export type RootStackParamList = {
   Chart: { asset: Asset };
+  Swap: { asset?: Asset };
 };

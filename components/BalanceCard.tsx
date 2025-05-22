@@ -1,7 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../types/assets";
 
 interface BalanceCardProps {
   netWorth: number;
@@ -14,6 +23,8 @@ const BalanceCard = ({
   loading,
   overallChangePercent,
 }: BalanceCardProps) => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   // Determine color and icon for overall change
   const isUp = (overallChangePercent ?? 0) >= 0;
   const changeColor = isUp ? "#85FF8F" : "#FF5B5B";
@@ -69,9 +80,12 @@ const BalanceCard = ({
           <View style={styles.actionButtonCard}>
             <Ionicons name="arrow-down" size={24} color="#fff" />
           </View>
-          <View style={styles.actionButtonCard}>
+          <TouchableOpacity
+            style={styles.actionButtonCard}
+            onPress={() => navigation.navigate("Swap", {})}
+          >
             <Ionicons name="swap-horizontal" size={24} color="#fff" />
-          </View>
+          </TouchableOpacity>
           <View style={styles.actionButtonCard}>
             <Ionicons name="ellipsis-horizontal" size={24} color="#fff" />
           </View>

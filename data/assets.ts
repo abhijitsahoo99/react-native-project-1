@@ -4,6 +4,7 @@ export const assets: Asset[] = [
   {
     id: "1",
     name: "Bitcoin",
+    symbol: "btc",
     coingeckoId: "bitcoin",
     chain: "Bitcoin",
     amount: "4.0258",
@@ -19,6 +20,7 @@ export const assets: Asset[] = [
   {
     id: "2",
     name: "BNB",
+    symbol: "bnb",
     coingeckoId: "binancecoin",
     chain: "BNB Smart Chain",
     amount: "44.0258",
@@ -34,6 +36,7 @@ export const assets: Asset[] = [
   {
     id: "3",
     name: "USDT",
+    symbol: "usdt",
     coingeckoId: "tether",
     chain: "BNB Smart Chain",
     amount: "10,576.13",
@@ -49,6 +52,7 @@ export const assets: Asset[] = [
   {
     id: "4",
     name: "MATIC",
+    symbol: "matic",
     coingeckoId: "matic-network",
     chain: "Polygon",
     amount: "256",
@@ -64,6 +68,7 @@ export const assets: Asset[] = [
   {
     id: "5",
     name: "MATIC",
+    symbol: "matic",
     coingeckoId: "matic-network",
     chain: "Polygon",
     amount: "256",

@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import WalletHome from "../screens/WalletHome";
 import ChartPage from "../screens/ChartPage";
+import SwapPage from "../screens/SwapPage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -42,6 +43,7 @@ const AppNavigator = () => (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Main" component={MainTabs} />
       <Stack.Screen name="Chart" component={ChartPage} />
+      <Stack.Screen name="Swap" component={SwapPage} />
     </Stack.Navigator>
   </NavigationContainer>
 );

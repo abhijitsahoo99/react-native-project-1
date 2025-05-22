@@ -20,6 +20,7 @@ import { AreaChart, LineChart } from "react-native-svg-charts";
 // @ts-ignore
 import * as shape from "d3-shape";
 import { Defs, LinearGradient as SvgGradient, Stop } from "react-native-svg";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const TAB_OPTIONS = [
   { label: "H", days: 1, interval: "hourly" },
@@ -43,7 +44,8 @@ const Gradient = () => (
 );
 
 const ChartPage = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute<ChartPageRouteProp>();
   const asset = route.params?.asset;
   const { prices, loading } = usePrices();
@@ -185,7 +187,10 @@ const ChartPage = () => {
             <Text style={styles.actionLabel}>Receive</Text>
           </View>
           <View style={styles.actionCol}>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => navigation.navigate("Swap", { asset: asset })}
+            >
               <Ionicons name="swap-horizontal" size={24} color="#fff" />
             </TouchableOpacity>
             <Text style={styles.actionLabel}>Swap</Text>
@@ -327,7 +332,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 4,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   headerLeft: {
     width: 32,
@@ -459,7 +464,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "flex-start",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     marginTop: 16,
   },
   chartValue: {
@@ -494,7 +499,7 @@ const styles = StyleSheet.create({
   chartTabsRow: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     marginTop: 8,
     justifyContent: "center",
     backgroundColor: "transparent",
@@ -520,7 +525,7 @@ const styles = StyleSheet.create({
   },
   transactionsSection: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     marginTop: 24,
   },
   transactionsHeaderRow: {
