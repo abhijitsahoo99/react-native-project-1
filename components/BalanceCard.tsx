@@ -134,12 +134,12 @@ const styles = StyleSheet.create({
   },
   balanceLabel: {
     color: "#ffffff",
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: "500",
   },
   usdBadge: {
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     borderRadius: 10,
     paddingHorizontal: 8,
@@ -153,13 +153,13 @@ const styles = StyleSheet.create({
   },
   balanceMain: {
     color: "#fff",
-    fontSize: 38,
+    fontSize: 36,
     fontWeight: "bold",
     letterSpacing: 1,
   },
   balanceDecimal: {
     color: "#B0B6D1",
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "600",
     marginBottom: 2,
     marginLeft: 2,
@@ -176,14 +176,14 @@ const styles = StyleSheet.create({
   },
   balanceChangeValue: {
     color: "#85FF8F",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "medium",
     marginLeft: 2,
   },
   balanceChangePercent: {
     color: "#85FF8F",
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "medium",
     marginLeft: 2,
   },
   actionButtonsRow: {
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     color: "#EEE8F4",
     fontSize: 16,
     fontWeight: "500",
-    width: 56,
+    width: 64,
     textAlign: "center",
   },
 });

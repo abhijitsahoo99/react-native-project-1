@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   type: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "600",
     marginRight: 8,
     letterSpacing: 0.28,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "600",
   },
   status: {

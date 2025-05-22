@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: "#1A1B1B",
+    backgroundColor: "#1A1824",
     marginBottom: 16,
   },
 

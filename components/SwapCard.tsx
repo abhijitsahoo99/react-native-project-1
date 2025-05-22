@@ -45,7 +45,7 @@ const SwapCard: React.FC<SwapCardProps> = ({
           {isFrom ? "You Pay" : "You Receive"}
         </Text>
         <View style={styles.walletRow}>
-          <Ionicons name="wallet-outline" size={18} color="#B0B6D1" />
+          <Ionicons name="wallet-outline" size={16} color="#B0B6D1" />
           <Text style={styles.walletAmount}>
             {walletAmount} {asset.symbol.toUpperCase()}
           </Text>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   amountInput: {
     color: "#fff",
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "right",
     padding: 0,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   amountText: {
     color: "#fff",
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "right",
     width: 120,
@@ -215,12 +215,12 @@ const styles = StyleSheet.create({
   },
   usdText: {
     color: "#B0B6D1",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "500",
   },
   labelFaded: {
     color: "#B0B6D1",
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "500",
   },
   walletRow: {
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   walletAmount: {
     color: "#B0B6D1",
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "500",
   },
   maxBtn: {
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   },
   maxBtnText: {
     color: "#000000",
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: "500",
   },
   modalOverlay: {

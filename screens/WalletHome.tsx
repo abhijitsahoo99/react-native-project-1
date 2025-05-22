@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: "#FFFFFF",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
   },
   dropdown: {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   dropdownText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "medium",
     marginRight: 4,
     color: "#4B56AD",

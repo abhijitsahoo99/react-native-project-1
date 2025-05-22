@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     marginRight: 8,
     letterSpacing: 0.28,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   price: {
     color: "#B0B6D1",
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "500",
     marginRight: 10,
   },
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   amount: {
     color: "#fff",
-    fontSize: 19,
+    fontSize: 18,
     fontWeight: "bold",
   },
   value: {

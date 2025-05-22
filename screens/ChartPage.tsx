@@ -377,9 +377,8 @@ const styles = StyleSheet.create({
   },
   assetName: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "400",
-    letterSpacing: 0.36,
     marginBottom: 2,
   },
   chainPill: {
@@ -409,7 +408,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 12,
-    letterSpacing: 0.96,
   },
   balanceSymbol: {
     color: "#B0B6D1",
@@ -438,13 +436,13 @@ const styles = StyleSheet.create({
   },
   changeValue: {
     color: "#12C168",
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "bold",
     marginLeft: 2,
   },
   changePercent: {
     color: "#12C168",
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "bold",
     marginLeft: 2,
   },
@@ -472,7 +470,7 @@ const styles = StyleSheet.create({
   },
   actionLabel: {
     color: "#fff",
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "500",
     textAlign: "center",
   },
@@ -497,7 +495,7 @@ const styles = StyleSheet.create({
   },
   chartValue: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 0,
     letterSpacing: 0.4,
@@ -510,20 +508,20 @@ const styles = StyleSheet.create({
   },
   chartPercent: {
     color: "#12C168",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "medium",
     letterSpacing: 0.56,
   },
   chartDate: {
     color: "#8B8B8B",
-    fontSize: 18,
+    fontSize: 16,
     marginTop: 2,
     marginBottom: 8,
     letterSpacing: 0.56,
   },
   chartPlaceholder: {
     width: "100%",
-    height: 200,
+    height: 180,
     marginTop: 0,
     overflow: "hidden",
   },
@@ -547,7 +545,7 @@ const styles = StyleSheet.create({
   },
   chartTabText: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "500",
   },
   chartTabTextActive: {
@@ -557,13 +555,13 @@ const styles = StyleSheet.create({
   transactionsSection: {
     flex: 1,
     paddingHorizontal: 16,
-    marginTop: 32,
+    marginTop: 24,
   },
   transactionsHeaderRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 4,
     paddingHorizontal: 2,
   },
   transactionsTitle: {
