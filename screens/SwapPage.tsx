@@ -145,24 +145,31 @@ const SwapPage = () => {
     if (result.success) {
       setCountdown(5);
       setSwapSuccess(true);
+      // Start interval to decrease countdown
       timerRef.current = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev === 1) {
-            clearInterval(timerRef.current!);
-            setSwapSuccess(false);
-            (navigation as any).navigate("Main", { screen: "Home" });
-          }
-          return prev - 1;
-        });
+        setCountdown((prev) => prev - 1);
       }, 1000);
     }
   };
+
+  // Effect to handle countdown completion and navigation
+  useEffect(() => {
+    if (swapSuccess && countdown === 0) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      setSwapSuccess(false);
+      // Navigate after the state updates are processed
+      (navigation as any).navigate("Main", { screen: "Home" });
+    }
+  }, [countdown, swapSuccess, navigation]);
 
   // Close success modal
   const closeSuccess = () => {
     setSwapSuccess(false);
     if (timerRef.current) clearInterval(timerRef.current);
-    (navigation as any).navigate("Main", { screen: "Home" });
+    (navigation as any).navigate("Main", { screen: "Home" }); // Keep navigation here for manual close
   };
 
   // Max button
