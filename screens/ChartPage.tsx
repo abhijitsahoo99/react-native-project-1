@@ -142,7 +142,7 @@ const ChartPage = () => {
           <Text style={styles.assetName}>{asset.name}</Text>
         </View>
         <TouchableOpacity style={styles.headerRight}>
-          <Ionicons name="refresh" size={24} color="#fff" />
+          <Ionicons name="sync-outline" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
       <View style={styles.chainPill}>

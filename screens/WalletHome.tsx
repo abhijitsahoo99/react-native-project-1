@@ -17,6 +17,7 @@ import AssetItem from "../components/AssetItem";
 import { RootStackParamList } from "../types/assets";
 import { assets } from "../data/assets";
 import { usePrices } from "../context/PriceContext";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const WalletHomeContent = () => {
   const navigation =
@@ -61,12 +62,26 @@ const WalletHomeContent = () => {
             color="white"
             style={styles.icon}
           />
-          <Ionicons
-            name="notifications-outline"
-            size={24}
-            color="white"
-            style={styles.icon}
-          />
+          <View style={{ position: "relative" }}>
+            <Ionicons
+              name="notifications-outline"
+              size={24}
+              color="white"
+              style={styles.icon}
+            />
+            <View
+              style={{
+                position: "absolute",
+                top: 14,
+                right: 18,
+                width: 12,
+                height: 12,
+                borderRadius: 5,
+                backgroundColor: "#4468fe",
+                borderWidth: 2,
+              }}
+            />
+          </View>
         </View>
       </View>
 
