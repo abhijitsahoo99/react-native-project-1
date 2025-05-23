@@ -2,6 +2,9 @@
 
 A React Native mobile application built with Expo that implements a cryptocurrency wallet interface with real-time price tracking, swap functionality and biometric authentication.
 
+![$354,935 18](https://github.com/user-attachments/assets/225877c5-41cb-4cb3-98fc-cecade81611c)
+
+
 ## Getting Started
 
 ### Prerequisites
