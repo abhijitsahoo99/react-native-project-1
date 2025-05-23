@@ -53,12 +53,12 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-ios/.xcode.env.local
+.xcode.env.local
 
 # iOS
 ios/Pods/
 ios/build/
-ios/*.xcworkspace
+ios/*.xcworkspace/xcuserdata/
 ios/*.xcodeproj/xcuserdata/
 ios/*.xcodeproj/project.xcworkspace/xcuserdata/
 

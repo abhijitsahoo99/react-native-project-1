@@ -9,6 +9,8 @@ import { assets } from "../data/assets";
 
 export type Prices = { [id: string]: { usd: number; usd_24h_change?: number } };
 
+const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
+
 const PriceContext = createContext<{
   prices: Prices;
   loading: boolean;
@@ -32,24 +34,31 @@ export const PriceProvider = ({ children }: { children: ReactNode }) => {
   const fetchPrices = async () => {
     setLoading(true);
     setError(null);
+
     try {
       const ids = assets.map((a) => a.coingeckoId).join(",");
       const res = await fetch(
         `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`
       );
+
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
+
       const data = await res.json();
       setPrices(data);
       setLastUpdated(new Date());
-      setLoading(false);
     } catch (e) {
       setError("Failed to fetch prices. Please try again.");
+      console.error("Error fetching prices:", e);
+    } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchPrices();
-    const interval = setInterval(fetchPrices, 300000); // every 5 minutes
+    const interval = setInterval(fetchPrices, REFRESH_INTERVAL);
     return () => clearInterval(interval);
   }, []);
 

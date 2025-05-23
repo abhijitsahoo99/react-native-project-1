@@ -21,18 +21,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import SwapCard from "../components/SwapCard";
 import { assets as assetList } from "../data/assets";
 import { Easing } from "react-native";
-
-const fetchPrice = async (coingeckoId: string) => {
-  try {
-    const res = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId}&vs_currencies=usd`
-    );
-    const data = await res.json();
-    return data[coingeckoId]?.usd || 0;
-  } catch {
-    return 0;
-  }
-};
+import { usePrices } from "../context/PriceContext";
 
 const getWalletAmount = (asset: any) => {
   return asset.amount;
@@ -41,6 +30,7 @@ const getWalletAmount = (asset: any) => {
 const SwapPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const { prices } = usePrices();
   const [countdown, setCountdown] = useState(5);
 
   // Use asset from params if present, otherwise default to BTC
@@ -82,6 +72,12 @@ const SwapPage = () => {
     ? fromPrice.toLocaleString(undefined, { maximumFractionDigits: 2 })
     : "-";
 
+  // Update prices when assets change
+  useEffect(() => {
+    setFromPrice(prices[fromAsset.coingeckoId]?.usd || 0);
+    setToPrice(prices[toAsset.coingeckoId]?.usd || 0);
+  }, [fromAsset, toAsset, prices]);
+
   // PanResponder for slider
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -114,23 +110,6 @@ const SwapPage = () => {
       }
     },
   });
-
-  // Fetch prices
-  useEffect(() => {
-    let isMounted = true;
-    const fetchPrices = async () => {
-      const fPrice = await fetchPrice(fromAsset.coingeckoId);
-      const tPrice = await fetchPrice(toAsset.coingeckoId);
-      if (isMounted) {
-        setFromPrice(fPrice);
-        setToPrice(tPrice);
-      }
-    };
-    fetchPrices();
-    return () => {
-      isMounted = false;
-    };
-  }, [fromAsset, toAsset]);
 
   // Calculate USD values and toAmount
   useEffect(() => {
