@@ -1,4 +1,4 @@
-# Spicenet React Native Assignment
+# React Native Project #1
 
 A React Native mobile application built with Expo that implements a cryptocurrency wallet interface with real-time price tracking, swap functionality and biometric authentication.
 
